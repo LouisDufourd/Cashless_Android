@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         items.add("clientUnsubscribe")
         items.add("standRemove")
         items.add("stockRemove")
+        items.add("stockRemoveArticle")
         val adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinner.adapter = adapter
@@ -51,37 +52,44 @@ class MainActivity : AppCompatActivity() {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     when(binding.spinner.selectedItemPosition) {
                         0 -> {
-                            updateInput(false,false,false,false, false, false)
+                            updateInput(false,false,false,false, false, false, false, false)
                             binding.getAllClient.text = "GET"
                         }
                         1 -> {
-                            updateInput(true,false,false,true, false, false)
+                            updateInput(true,false,false,true, false, false, false, false)
                             binding.textView.text = "CodeNFC"
                             binding.getAllClient.text = "GET"
                         }
-                        2 -> {updateInput(false,true,true,false, false, false)
+                        2 -> {updateInput(false,true,true,false, false, false, false, false)
                             binding.textViewID.text = "idStand"
                             binding.getAllClient.text = "GET"
                         }
                         3 -> {
-                            updateInput(false,true,true,false, false, false)
+                            updateInput(false,true,true,false, false, false, false, false)
                             binding.textViewID.text = "idCarte"
                             binding.getAllClient.text = "DELETE"
                         }
                         4 -> {
-                            updateInput(false,true,true,false, false, false)
+                            updateInput(false,true,true,false, false, false, false, false)
                             binding.textViewID.text = "idClient"
                             binding.getAllClient.text = "DELETE"
                         }
                         5 -> {
-                            updateInput(false,true,true,false, false, false)
+                            updateInput(false,true,true,false, false, false, false, false)
                             binding.textViewID.text = "idStand"
                             binding.getAllClient.text = "DELETE"
                         }
                         6 -> {
-                            updateInput(false,true,true,false, true, true)
+                            updateInput(false,true,true,false, true, true, false, false)
                             binding.textViewID.text = "idStock"
                             binding.textViewID2.text = "idStand"
+                            binding.getAllClient.text = "DELETE"
+                        }
+                        7 -> {
+                            updateInput(false,true,true,false, true, true,true,true)
+                            binding.textViewID.text = "idStock"
+                            binding.textViewID2.text = "idStand"
+                            binding.textViewAmount.text = "amount"
                             binding.getAllClient.text = "DELETE"
                         }
                     }
@@ -95,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun updateInput(editText: Boolean, editNumber:Boolean, textViewID:Boolean, textView:Boolean, textViewID2: Boolean, editNumber2: Boolean) {
+    fun updateInput(editText: Boolean, editNumber: Boolean, textViewID: Boolean, textView: Boolean, textViewID2: Boolean, editNumber2: Boolean, editNumber3: Boolean, textViewAmount: Boolean) {
         binding.editText.isVisible = editText
         binding.editText.isEnabled = editText
         binding.editTextNumber.isVisible = editNumber
@@ -105,6 +113,9 @@ class MainActivity : AppCompatActivity() {
         binding.editTextNumber2.isEnabled = editNumber2
         binding.editTextNumber2.isVisible = editNumber2
         binding.textViewID2.isVisible = textViewID2
+        binding.editTextNumber3.isEnabled = editNumber3
+        binding.editTextNumber3.isVisible = editNumber3
+        binding.textViewAmount.isVisible = textViewAmount
     }
 
     fun getButton() {
@@ -153,6 +164,14 @@ class MainActivity : AppCompatActivity() {
                             null
                         }
                     }
+                    7 -> {
+                        if(binding.editTextNumber.text.toString().toIntOrNull() != null && binding.editTextNumber2.text.toString().toIntOrNull() != null && binding.editTextNumber3.text.toString().toIntOrNull() != null) {
+                            API.api.stockRemoveArticle(binding.editTextNumber.text.toString().toInt(),binding.editTextNumber2.text.toString().toInt(), binding.editTextNumber3.text.toString().toInt())
+                        } else {
+                            Log.d("Cashless_Log", "can't convert to int")
+                            null
+                        }
+                    }
                     else -> {
                         Log.d("Cashless_Log", "member in the list don't exist")
                         null
@@ -167,7 +186,7 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent)
                     } else {
                         Log.d("Cashless_Log", "GetButton :\n${response.code()} : ${response.message()}")
-                        Toast.makeText(this@MainActivity, "${response.code()} : ${response.message()}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity,"${response.code()} : ${response.message()}",Toast.LENGTH_LONG).show()
                     }
                 } else {
                     Log.d("Cashless_Log", "no response")
