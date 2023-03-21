@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.google.gson.GsonBuilder
 import fr.plaglefleau.cashless.databinding.ActivityMainBinding
+import fr.plaglefleau.cashless.models.input.*
 import fr.plaglefleau.cashless.retrofit.API
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -52,46 +53,103 @@ class MainActivity : AppCompatActivity() {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     when(binding.spinner.selectedItemPosition) {
                         0 -> {
-                            updateInput(false,false,false,false, false, false, false, false)
+                            updateInput(
+                                listOf(
+                                    EditTextInput(false, false),
+                                    EditNumberInput(false, false),
+                                    EditNumber2Input(false, false),
+                                    EditNumber3Input(false, false),
+                                    EditTextNumberDecimalInput(false, false)
+                                ))
                             binding.getAllClient.text = "GET"
                         }
                         1 -> {
-                            updateInput(true,false,false,true, false, false, false, false)
+                            updateInput(
+                                listOf(
+                                    EditTextInput(true, true),
+                                    EditNumberInput(false, false),
+                                    EditNumber2Input(false, false),
+                                    EditNumber3Input(false, false),
+                                    EditTextNumberDecimalInput(false, false)
+                                ))
                             binding.textView.text = "CodeNFC"
                             binding.getAllClient.text = "GET"
                         }
-                        2 -> {updateInput(false,true,true,false, false, false, false, false)
+                        2 -> {
+                            updateInput(
+                                listOf(
+                                    EditTextInput(false, false),
+                                    EditNumberInput(true, true),
+                                    EditNumber2Input(true, true),
+                                    EditNumber3Input(false, false),
+                                    EditTextNumberDecimalInput(false, false)
+                                ))
                             binding.textViewID.text = "idStand"
                             binding.getAllClient.text = "GET"
                         }
-                        3 -> {
-                            updateInput(false,true,true,false, false, false, false, false)
+                        3 -> {updateInput(
+                            listOf(
+                                EditTextInput(false, false),
+                                EditNumberInput(true, true),
+                                EditNumber2Input(false, false),
+                                EditNumber3Input(false, false),
+                                EditTextNumberDecimalInput(false, false)
+                            ))
                             binding.textViewID.text = "idCarte"
                             binding.getAllClient.text = "DELETE"
                         }
                         4 -> {
-                            updateInput(false,true,true,false, false, false, false, false)
+                            updateInput(
+                                listOf(
+                                    EditTextInput(false, false),
+                                    EditNumberInput(true, true),
+                                    EditNumber2Input(false, false),
+                                    EditNumber3Input(false, false),
+                                    EditTextNumberDecimalInput(false, false)
+                                ))
                             binding.textViewID.text = "idClient"
                             binding.getAllClient.text = "DELETE"
                         }
                         5 -> {
-                            updateInput(false,true,true,false, false, false, false, false)
+                            updateInput(
+                                listOf(
+                                    EditTextInput(false, false),
+                                    EditNumberInput(true, true),
+                                    EditNumber2Input(false, false),
+                                    EditNumber3Input(false, false),
+                                    EditTextNumberDecimalInput(false, false)
+                                ))
                             binding.textViewID.text = "idStand"
                             binding.getAllClient.text = "DELETE"
                         }
                         6 -> {
-                            updateInput(false,true,true,false, true, true, false, false)
+                            updateInput(
+                                listOf(
+                                    EditTextInput(false, false),
+                                    EditNumberInput(true, true),
+                                    EditNumber2Input(true, true),
+                                    EditNumber3Input(false, false),
+                                    EditTextNumberDecimalInput(false, false)
+                                ))
                             binding.textViewID.text = "idStock"
                             binding.textViewID2.text = "idStand"
                             binding.getAllClient.text = "DELETE"
                         }
                         7 -> {
-                            updateInput(false,true,true,false, true, true,true,true)
+                            updateInput(
+                                listOf(
+                                    EditTextInput(false, false),
+                                    EditNumberInput(true, true),
+                                    EditNumber2Input(true, true),
+                                    EditNumber3Input(true, true),
+                                    EditTextNumberDecimalInput(false, false)
+                                ))
                             binding.textViewID.text = "idStock"
                             binding.textViewID2.text = "idStand"
                             binding.textViewAmount.text = "amount"
                             binding.getAllClient.text = "DELETE"
                         }
+                        8 -> {}
                     }
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -103,19 +161,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun updateInput(editText: Boolean, editNumber: Boolean, textViewID: Boolean, textView: Boolean, textViewID2: Boolean, editNumber2: Boolean, editNumber3: Boolean, textViewAmount: Boolean) {
-        binding.editText.isVisible = editText
-        binding.editText.isEnabled = editText
-        binding.editTextNumber.isVisible = editNumber
-        binding.editTextNumber.isEnabled = editNumber
-        binding.textViewID.isVisible = textViewID
-        binding.textView.isVisible = textView
-        binding.editTextNumber2.isEnabled = editNumber2
-        binding.editTextNumber2.isVisible = editNumber2
-        binding.textViewID2.isVisible = textViewID2
-        binding.editTextNumber3.isEnabled = editNumber3
-        binding.editTextNumber3.isVisible = editNumber3
-        binding.textViewAmount.isVisible = textViewAmount
+    //
+    // This function updates the visibility and enabled state of input fields based on the list of Inputs provided
+    fun updateInput(inputs: List<Input>) {
+        // Loop through each input
+        inputs.forEach { input ->
+            // Use when expression to handle different types of input
+            when (input) {
+                // If input is EditTextInput, update the visibility and enabled state of corresponding fields
+                is EditTextInput -> {
+                    binding.editText.isVisible = input.isVisible
+                    binding.editText.isEnabled = input.isEnabled
+                    binding.textView.isVisible = input.isVisible
+                }
+                // If input is EditNumberInput, update the visibility and enabled state of corresponding fields
+                is EditNumberInput -> {
+                    binding.editTextNumber.isVisible = input.isVisible
+                    binding.editTextNumber.isEnabled = input.isEnabled
+                    binding.textViewID.isVisible = input.isVisible
+                }
+                // If input is EditNumber2Input, update the visibility and enabled state of corresponding fields
+                is EditNumber2Input -> {
+                    binding.editTextNumber2.isEnabled = input.isEnabled
+                    binding.editTextNumber2.isVisible = input.isVisible
+                    binding.textViewID2.isVisible = input.isVisible
+                }
+                // If input is EditNumber3Input, update the visibility and enabled state of corresponding fields
+                is EditNumber3Input -> {
+                    binding.editTextNumber3.isEnabled = input.isEnabled
+                    binding.editTextNumber3.isVisible = input.isVisible
+                    binding.textViewAmount.isVisible = input.isVisible
+                }
+                // If input is EditTextNumberDecimalInput, update the visibility and enabled state of corresponding fields
+                is EditTextNumberDecimalInput -> {
+                    binding.editTextNumberDecimal.isVisible = input.isVisible
+                    binding.editTextNumberDecimal.isEnabled = input.isEnabled
+                    binding.textViewDecimal.isVisible = input.isVisible
+                }
+            }
+        }
     }
 
     fun getButton() {
@@ -169,6 +253,14 @@ class MainActivity : AppCompatActivity() {
                             API.api.stockRemoveArticle(binding.editTextNumber.text.toString().toInt(),binding.editTextNumber2.text.toString().toInt(), binding.editTextNumber3.text.toString().toInt())
                         } else {
                             Log.d("Cashless_Log", "can't convert to int")
+                            null
+                        }
+                    }
+                    8 -> {
+                        if(binding.editTextNumberDecimal.text.toString().toDoubleOrNull() != null) {
+                            API.api.cardCredit(binding.editTextNumberDecimal.text.toString(), binding.editTextNumberDecimal.text.toString().toDouble())
+                        } else {
+                            Log.d("Cashless_Log", "can't convert to double")
                             null
                         }
                     }

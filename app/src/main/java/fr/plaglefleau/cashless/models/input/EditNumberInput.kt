@@ -1,0 +1,4 @@
+package fr.plaglefleau.cashless.models.input
+
+data class EditNumberInput(val isEnabled: Boolean, val isVisible: Boolean) : Input(isEnabled, isVisible) {
+}

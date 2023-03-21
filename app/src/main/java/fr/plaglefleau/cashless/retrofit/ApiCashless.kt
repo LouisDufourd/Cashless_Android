@@ -5,6 +5,7 @@ import fr.plaglefleau.cashless.models.ListUtilisateur
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiCashless {
@@ -29,4 +30,9 @@ interface ApiCashless {
     suspend fun stockRemove(@Query("idStand") idStand: Int, @Query("idArticle") idArticle:Int) : Response<String> //6
     @DELETE("stock_remove_article")
     suspend fun stockRemoveArticle(@Query("idStand") idStand: Int, @Query("idArticle") idArticle: Int, @Query("amount") amount:Int) : Response<String> //7
+
+    //POST
+    @POST("card_credit")
+    suspend fun cardCredit(@Query("codeNFC") codeNFC: String, @Query("amount") amount: Double) : Response<String>
+
 }
