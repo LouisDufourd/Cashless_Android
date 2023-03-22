@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         items.add("standRemove")
         items.add("stockRemove")
         items.add("stockRemoveArticle")
+        items.add("creditCard")
         val adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinner.adapter = adapter
@@ -86,6 +87,7 @@ class MainActivity : AppCompatActivity() {
                                 ))
                             binding.textViewID.text = "idStand"
                             binding.getAllClient.text = "GET"
+
                         }
                         3 -> {updateInput(
                             listOf(
@@ -149,7 +151,20 @@ class MainActivity : AppCompatActivity() {
                             binding.textViewAmount.text = "amount"
                             binding.getAllClient.text = "DELETE"
                         }
-                        8 -> {}
+                        8 -> {
+                            updateInput(
+                                listOf(
+                                    EditTextInput(true,true),
+                                    EditNumberInput(false,false),
+                                    EditNumber2Input(false,false),
+                                    EditNumber3Input(false,false),
+                                    EditTextNumberDecimalInput(true,true)
+                                )
+                            )
+                            binding.textView.text = "CodeNFC"
+                            binding.textViewDecimal.text = "amount"
+                            binding.getAllClient.text = "POST"
+                        }
                     }
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {

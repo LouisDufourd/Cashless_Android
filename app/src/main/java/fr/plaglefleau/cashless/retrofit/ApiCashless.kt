@@ -33,6 +33,6 @@ interface ApiCashless {
 
     //POST
     @POST("card_credit")
-    suspend fun cardCredit(@Query("codeNFC") codeNFC: String, @Query("amount") amount: Double) : Response<String>
+    suspend fun cardCredit(@Query("codeNFC") codeNFC: String, @Query("amount") amount: Double) : Response<String> //8
 
 }
