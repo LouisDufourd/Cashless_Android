@@ -165,6 +165,17 @@ class MainActivity : AppCompatActivity() {
                             binding.textViewDecimal.text = "amount"
                             binding.getAllClient.text = "POST"
                         }
+                        9 -> {}
+                        10 -> {}
+                        11 -> {}
+                        12 -> {}
+                        13 -> {}
+                        14 -> {}
+                        15 -> {}
+                        16 -> {}
+                        17 -> {}
+                        18 -> {}
+                        19 -> {}
                     }
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -279,6 +290,17 @@ class MainActivity : AppCompatActivity() {
                             null
                         }
                     }
+                    9 -> {}
+                    10 -> {}
+                    11 -> {}
+                    12 -> {}
+                    13 -> {}
+                    14 -> {}
+                    15 -> {}
+                    16 -> {}
+                    17 -> {}
+                    18 -> {}
+                    19 -> {}
                     else -> {
                         Log.d("Cashless_Log", "member in the list don't exist")
                         null
