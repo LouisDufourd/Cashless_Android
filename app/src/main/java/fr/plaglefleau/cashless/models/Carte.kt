@@ -1,15 +1,9 @@
 package fr.plaglefleau.cashless.models
 
-data class Carte(
-    val argent: Double,
-    val codeNFC: String,
-    val id: Int,
-    val pin: Int
-) {
+import com.google.gson.Gson
+
+data class Carte(var id:Int?, val pin:Int?, val argent:Double?, val codeNFC:String?) {
     override fun toString(): String {
-        return "    argent:$argent\n" +
-               "    codeNFC:$codeNFC\n" +
-               "    id:$id\n" +
-               "    pin:$pin"
+        return Gson().toJson(this)
     }
 }
