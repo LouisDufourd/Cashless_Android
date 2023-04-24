@@ -11,8 +11,10 @@ import com.google.gson.Gson
 import fr.plaglefleau.cashless.databinding.ActivityRequestResultBinding
 import fr.plaglefleau.cashless.holder.MyAdapterClient
 import fr.plaglefleau.cashless.holder.MyAdapterHistorique
-import fr.plaglefleau.cashless.models.Historique
 import fr.plaglefleau.cashless.models.Utilisateur
+import fr.plaglefleau.cashless.models.response.carte.CardBalanceResponse
+import fr.plaglefleau.cashless.models.response.stand.StandHistoriqueResponse
+import fr.plaglefleau.cashless.models.response.utilisateur.ClientConnectResponse
 
 class RequestResultActivity : AppCompatActivity() {
     lateinit var binding: ActivityRequestResultBinding
@@ -25,38 +27,26 @@ class RequestResultActivity : AppCompatActivity() {
 
         when(intent.extras?.get("request")) {
             0 -> {
+                val carte = Gson().fromJson(intent.extras?.get("body").toString(), CardBalanceResponse::class.java)
+                binding.textView.isVisible = true
+                binding.recyclerView.isVisible = false
+                Log.d("Cashless_Log","${carte.cardBalance}")
+                binding.textView.text = "${carte.cardBalance}"
+            }
+            1-> {
+                val historiques = Gson().fromJson(intent.extras?.get("body").toString(),StandHistoriqueResponse::class.java)
                 binding.textView.isVisible = false
-
-                val utilisateurs = Gson().fromJson(intent.extras?.get("body").toString(), Array<Utilisateur>::class.java).toList() as ArrayList<Utilisateur>
-                Log.d("Cashless_Log", intent.extras?.get("body").toString())
-
                 val recyclerViewNews = binding.recyclerView
-                val newsAdapter = MyAdapterClient(utilisateurs)
+                val newsAdapter = MyAdapterHistorique(historiques.historiques!!)
                 recyclerViewNews.adapter = newsAdapter
                 val layoutManager = LinearLayoutManager(parent, LinearLayoutManager.VERTICAL, false)
                 recyclerViewNews.layoutManager = layoutManager
             }
-            1 -> {
-                val amount = Gson().fromJson(intent.extras?.get("body").toString(), Double::class.java)
+            11 -> {
+                val result = Gson().fromJson(intent.extras?.get("body").toString(),ClientConnectResponse::class.java)
                 binding.textView.isVisible = true
                 binding.recyclerView.isVisible = false
-                Log.d("Cashless_Log","$amount")
-                binding.textView.text = "$amount"
-            }
-            2-> {
-                val historiques = Gson().fromJson(intent.extras?.get("body").toString(),Array<Historique>::class.java).toList() as ArrayList<Historique>
-                binding.textView.isVisible = false
-                val recyclerViewNews = binding.recyclerView
-                val newsAdapter = MyAdapterHistorique(historiques)
-                recyclerViewNews.adapter = newsAdapter
-                val layoutManager = LinearLayoutManager(parent, LinearLayoutManager.VERTICAL, false)
-                recyclerViewNews.layoutManager = layoutManager
-            }
-            3 -> {
-                val result = Gson().fromJson(intent.extras?.get("body").toString(),String::class.java)
-                binding.textView.isVisible = true
-                binding.recyclerView.isVisible = false
-                binding.textView.text = result
+                binding.textView.text = "responseString = ${result.responseString}\nisGoodLogin = ${result.isGoodLogin}"
             }
         }
     }
